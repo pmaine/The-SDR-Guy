@@ -12,6 +12,7 @@
 from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
+from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import analog
 from gnuradio import audio
 from gnuradio import blocks
@@ -84,9 +85,31 @@ class AirbandAmReceiver(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 3):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self._tuner_range = qtgui.Range(118000000, 136975000, 5000, 128350000, 200)
-        self._tuner_win = qtgui.RangeWidget(self._tuner_range, self.set_tuner, "Tuner", "counter_slider", int, QtCore.Qt.Horizontal)
-        self.top_grid_layout.addWidget(self._tuner_win, 1, 0, 1, 3)
+        # Create the options list
+        self._tuner_options = [118000000, 123900000, 121200000, 128350000, 121900000]
+        # Create the labels list
+        self._tuner_labels = ['TYS Knoxville Arrival/Departure 1', 'TYS Knoxville Arrival/Departure 2', 'TYS Knoxville Tower', 'TYS Knoxville ATIS ( Weather and More )', 'TYS Knoxville Ground']
+        # Create the combo box
+        # Create the radio buttons
+        self._tuner_group_box = Qt.QGroupBox("Choose Frequency" + ": ")
+        self._tuner_box = Qt.QHBoxLayout()
+        class variable_chooser_button_group(Qt.QButtonGroup):
+            def __init__(self, parent=None):
+                Qt.QButtonGroup.__init__(self, parent)
+            @pyqtSlot(int)
+            def updateButtonChecked(self, button_id):
+                self.button(button_id).setChecked(True)
+        self._tuner_button_group = variable_chooser_button_group()
+        self._tuner_group_box.setLayout(self._tuner_box)
+        for i, _label in enumerate(self._tuner_labels):
+            radio_button = Qt.QRadioButton(_label)
+            self._tuner_box.addWidget(radio_button)
+            self._tuner_button_group.addButton(radio_button, i)
+        self._tuner_callback = lambda i: Qt.QMetaObject.invokeMethod(self._tuner_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._tuner_options.index(i)))
+        self._tuner_callback(self.tuner)
+        self._tuner_button_group.buttonClicked[int].connect(
+            lambda i: self.set_tuner(self._tuner_options[i]))
+        self.top_grid_layout.addWidget(self._tuner_group_box, 1, 0, 1, 3)
         for r in range(1, 2):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 3):
@@ -217,7 +240,7 @@ class AirbandAmReceiver(gr.top_block, Qt.QWidget):
             window.WIN_BLACKMAN_hARRIS, #wintype
             tuner, #fc
             sample_rate, #bw
-            'Spectrum Analyzer ( FFT )', #name
+            'Spectrum Analyzer', #name
             1,
             None # parent
         )
@@ -314,6 +337,7 @@ class AirbandAmReceiver(gr.top_block, Qt.QWidget):
 
     def set_tuner(self, tuner):
         self.tuner = tuner
+        self._tuner_callback(self.tuner)
         self.qtgui_freq_sink_x_0.set_frequency_range(self.tuner, self.sample_rate)
         self.qtgui_waterfall_sink_x_0.set_frequency_range(self.tuner, self.sample_rate)
         self.rtlsdr_source_0.set_center_freq(self.tuner, 0)
