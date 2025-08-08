@@ -117,12 +117,12 @@ blocks:
     gain: '1'
     high_cutoff_freq: '4000'
     interp: '1'
-    low_cutoff_freq: '60'
+    low_cutoff_freq: '300'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fir_filter_fff
-    width: '12'
+    width: '300'
     win: window.WIN_HAMMING
   states:
     bus_sink: false
@@ -243,7 +243,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_taps: '4096'
+    num_taps: '240'
     win: window.WIN_HAMMING
   states:
     bus_sink: false
