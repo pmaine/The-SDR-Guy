@@ -66,29 +66,6 @@ blocks:
     coordinate: [8, 160]
     rotation: 0
     state: enabled
-- name: analog_sig_source_x_2
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: aa
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    showports: 'False'
-    type: complex
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [480, 504.0]
-    rotation: 0
-    state: enabled
 - name: audio_sink_0
   id: audio_sink
   parameters:
@@ -196,24 +173,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [744, 40.0]
-    rotation: 0
-    state: enabled
-- name: blocks_multiply_xx_0
-  id: blocks_multiply_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [744, 248.0]
     rotation: 0
     state: enabled
 - name: blocks_wavfile_source_0
@@ -430,40 +389,17 @@ blocks:
     coordinate: [1280, 556.0]
     rotation: 0
     state: enabled
-- name: rational_resampler_xxx_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '24'
-    fbw: '0'
-    interp: '25'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: ''
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [976, 20.0]
-    rotation: 0
-    state: enabled
 
 connections:
-- [analog_sig_source_x_2, '0', blocks_multiply_xx_0, '1']
 - [band_pass_filter_0, '0', hilbert_fc_1, '0']
 - [blocks_complex_to_real_0, '0', blocks_multiply_const_vxx_0, '0']
-- [blocks_conjugate_cc_0, '0', blocks_multiply_xx_0, '0']
+- [blocks_conjugate_cc_0, '0', blocks_multiply_const_xx_0, '0']
 - [blocks_multiply_const_vxx_0, '0', audio_sink_0, '0']
 - [blocks_multiply_const_vxx_0, '0', qtgui_time_sink_x_0, '0']
-- [blocks_multiply_const_xx_0, '0', rational_resampler_xxx_0, '0']
-- [blocks_multiply_xx_0, '0', blocks_multiply_const_xx_0, '0']
+- [blocks_multiply_const_xx_0, '0', blocks_complex_to_real_0, '0']
+- [blocks_multiply_const_xx_0, '0', qtgui_freq_sink_x_0, '0']
 - [blocks_wavfile_source_0, '0', band_pass_filter_0, '0']
 - [hilbert_fc_1, '0', blocks_conjugate_cc_0, '0']
-- [rational_resampler_xxx_0, '0', blocks_complex_to_real_0, '0']
-- [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0, '0']
 
 metadata:
   file_format: 1
