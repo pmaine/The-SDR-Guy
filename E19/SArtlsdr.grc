@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Not titled yet
+    title: Simple Spectrum Analyzer
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -79,7 +79,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 1e6
+    value: 2e6
   states:
     bus_sink: false
     bus_source: false
@@ -93,8 +93,8 @@ blocks:
     alias: ''
     comment: ''
     gui_hint: ''
-    label0: Spectrum Analyzer (spectrum)
-    label1: Waterfall
+    label0: Spectrum Analyzer (full spectrum)
+    label1: Spectrum Zoom
     label10: Tab 10
     label11: Tab 11
     label12: Tab 12
@@ -105,15 +105,15 @@ blocks:
     label17: Tab 17
     label18: Tab 18
     label19: Tab 19
-    label2: Oscilloscope (time)
-    label3: Tab 3
+    label2: Waterfall
+    label3: Oscilloscope (time)
     label4: Tab 4
     label5: Tab 5
     label6: Tab 6
     label7: Tab 7
     label8: Tab 8
     label9: Tab 9
-    num_tabs: '3'
+    num_tabs: '4'
   states:
     bus_sink: false
     bus_source: false
@@ -153,14 +153,14 @@ blocks:
     comment: ''
     ctrlpanel: 'False'
     fc: frequency
-    fftsize: '1024'
+    fftsize: '8192'
     freqhalf: 'True'
     grid: 'False'
     gui_hint: display@0
     label: Relative Gain
     label1: ''
     label10: ''''''
-    label2: ''''''
+    label2: Zoom Spectrum
     label3: ''''''
     label4: ''''''
     label5: ''''''
@@ -199,7 +199,88 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 500.0]
+    coordinate: [624, 628.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_1
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: 100000/2
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'False'
+    fc: frequency
+    fftsize: '4096'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: display@1
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: Zoom Spectrum Analyzer (100 KHz )
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [928, 220.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -233,7 +314,7 @@ blocks:
     ctrlpanel: 'False'
     entags: 'True'
     grid: 'False'
-    gui_hint: display@2
+    gui_hint: display@3
     label1: Signal 1
     label10: Signal 10
     label2: Signal 2
@@ -296,7 +377,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [704, 380.0]
+    coordinate: [632, 500.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0
@@ -331,7 +412,7 @@ blocks:
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
-    gui_hint: display@1
+    gui_hint: display@2
     int_max: '10'
     int_min: '-140'
     label1: ''
@@ -357,7 +438,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 260.0]
+    coordinate: [616, 372.0]
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '20'
+    fbw: '0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 208.0]
     rotation: 0
     state: enabled
 - name: rtlsdr_source_0
@@ -719,9 +820,11 @@ blocks:
     state: enabled
 
 connections:
+- [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_1, '0']
 - [rtlsdr_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [rtlsdr_source_0, '0', qtgui_time_sink_x_0, '0']
 - [rtlsdr_source_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [rtlsdr_source_0, '0', rational_resampler_xxx_0, '0']
 
 metadata:
   file_format: 1

@@ -226,7 +226,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 236.0]
+    coordinate: [328, 216.0]
     rotation: 0
     state: true
 - name: fft_filter_xxx_0
