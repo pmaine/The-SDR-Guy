@@ -220,7 +220,7 @@ blocks:
     autoscale: 'False'
     average: '1.0'
     axislabels: 'True'
-    bw: 100000/2
+    bw: 100e3
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
