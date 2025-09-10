@@ -45,7 +45,7 @@ blocks:
     start: 500e3
     step: '10'
     stop: 1.766e9
-    value: 146e6
+    value: 850e3
     widget: eng_slider
   states:
     bus_sink: false
