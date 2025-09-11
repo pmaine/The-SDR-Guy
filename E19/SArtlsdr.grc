@@ -448,7 +448,7 @@ blocks:
     alias: ''
     comment: ''
     decim: '20'
-    fbw: '0'
+    fbw: '0.4'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
